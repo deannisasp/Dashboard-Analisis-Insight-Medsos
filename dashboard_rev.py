@@ -39,7 +39,6 @@ with tab1:
                 # Proses data Instagram
                 df_ig['Tanggal Upload'] = pd.to_datetime(df_ig['Tanggal Upload'], errors='coerce')
                 df_ig['Engagement Rate (%)'] = (df_ig['Engagement'] / df_ig['Reach']) * 100
-                df_ig['Reach Rate (%)'] = (df_ig['Reach'] / 3086) * 100
                 st.success("Data Instagram berhasil dimuat!")
                 
                 # Simpan data Instagram di session state
@@ -53,7 +52,6 @@ with tab1:
                 df_tiktok['Tanggal Upload'] = pd.to_datetime(df_tiktok['Tanggal Upload'], errors='coerce')
                 df_tiktok['Engagement'] = df_tiktok[['Like', 'Share', 'Comment', 'Save']].sum(axis=1)
                 df_tiktok['Engagement Rate (%)'] = (df_tiktok['Engagement'] / df_tiktok['Reach']) * 100
-                df_tiktok['Reach Rate (%)'] = (df_ig['Reach'] / 2341) * 100
                 
                 # Menjumlahkan nilai berdasarkan kategori
                 upload_tiktok = df_tiktok.groupby('Type')['Jumlah Konten'].sum().reindex(['Photo Slide', 'Video'], fill_value=0).reset_index()
@@ -103,7 +101,6 @@ with tab2:
                 df_ig = pd.read_excel(uploaded_instagram)
                 df_ig['Tanggal Upload'] = pd.to_datetime(df_ig['Tanggal Upload'], errors='coerce')
                 df_ig['Engagement Rate (%)'] = (df_ig['Engagement'] / df_ig['Reach']) * 100
-                df_ig['Reach Rate (%)'] = (df_ig['Reach'] / 3086) * 100
                 st.success("Data Instagram berhasil diproses!")
                 
                 # Simpan data Instagram di session state
@@ -118,7 +115,6 @@ with tab2:
                 df_tiktok['Tanggal Upload'] = pd.to_datetime(df_tiktok['Tanggal Upload'], errors='coerce')
                 df_tiktok['Engagement'] = df_tiktok[['Like', 'Share', 'Comment', 'Save']].sum(axis=1)
                 df_tiktok['Engagement Rate (%)'] = (df_tiktok['Engagement'] / df_tiktok['Reach']) * 100
-                df_tiktok['Reach Rate (%)'] = (df_ig['Reach'] / 2341) * 100
                 # Menjumlahkan nilai berdasarkan kategori
                 upload_tiktok = df_tiktok.groupby('Type')['Jumlah Konten'].sum().reindex(['Photo Slide', 'Video'], fill_value=0).reset_index()
                 upload_tiktok.columns = ['Jenis Konten', 'Jumlah Konten']
@@ -184,16 +180,14 @@ if 'df_ig' in st.session_state and 'df_tiktok' in st.session_state:
             jenis_konten_analysis = df_ig.groupby('Jenis Konten').agg({
                 'Reach': 'mean',
                 'Engagement': 'mean',
-                'Engagement Rate (%)': 'mean',
-                'Reach Rate (%)' : 'mean'
+                'Engagement Rate (%)': 'mean'
             }).reset_index()
 
             jenis_konten_analysis.columns = [
                 'Jenis Konten',
                 'Average Reach',
                 'Average Engagement',
-                'Average Engagement Rate',
-                'Average Reach Rate (%)
+                'Average Engagement Rate'
             ]
 
             jenis_konten_analysis = jenis_konten_analysis.sort_values(by='Average Engagement Rate', ascending=False)
