@@ -581,6 +581,38 @@ if 'df_ig' in st.session_state and 'df_tiktok' in st.session_state:
             )
             st.plotly_chart(fig_performance)
 
+            # Analisis Berdasarkan Topik
+            st.write("Analisis Berdasarkan Topik:")
+            topik_performance = df_tiktok.groupby('Topik').agg({
+                'Reach': 'mean',
+                'Engagement Rate (%)': 'mean',
+                'Judul Konten': 'count'  # Jumlah konten per topik
+            }).rename(columns={'Judul Konten': 'Jumlah Konten'}).reset_index()
+
+            topik_performance = topik_performance.sort_values(by='Reach', ascending=False)
+
+            # Tampilkan data dalam tabel
+            st.write(topik_performance)
+
+            # Visualisasi scatter plot menggunakan Plotly
+            st.write("Visualisasi Rata-rata Reach dan Engagement Rate Berdasarkan Topik:")
+            fig_topik = px.scatter(
+                topik_performance,
+                x='Reach',
+                y='Engagement Rate (%)',
+                size='Jumlah Konten',
+                color='Topik',
+                hover_name='Topik',
+                size_max=60,
+                labels={'Reach': 'Rata-rata Reach', 'Engagement Rate (%)': 'Rata-rata Engagement Rate (%)'},
+                title="Rata-rata Reach dan Engagement Rate Berdasarkan Topik"
+            )
+            fig_topik.update_layout(
+                xaxis_title='Rata-rata Reach',
+                yaxis_title='Rata-rata Engagement Rate (%)'
+            )
+            st.plotly_chart(fig_topik)
+
             # Analisis Berdasarkan Lokasi
             st.write("Distribusi Demografi Berdasarkan Lokasi:")
             df_tiktok['Indonesia'] = pd.to_numeric(df_tiktok['Indonesia'], errors='coerce')
