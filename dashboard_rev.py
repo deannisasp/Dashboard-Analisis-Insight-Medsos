@@ -551,8 +551,7 @@ if 'df_ig' in st.session_state and 'df_tiktok' in st.session_state:
             jenis_konten_analysis_tiktok = df_tiktok.groupby('Type').agg({
                 'Reach': 'mean',
                 'Engagement': 'mean',
-                'Engagement Rate (%)': 'mean',
-                'Reach Rate (%)' : 'mean'
+                'Engagement Rate (%)': 'mean'
             }).reset_index()
 
             # Merapikan kolom hasil
@@ -560,8 +559,7 @@ if 'df_ig' in st.session_state and 'df_tiktok' in st.session_state:
                 'Jenis Konten',
                 'Average Reach',
                 'Average Engagement',
-                'Average Engagement Rate (%)',
-                'Reach Rate (%)
+                'Average Engagement Rate (%)'
             ]
 
             # Urutkan data berdasarkan Average Engagement Rate
